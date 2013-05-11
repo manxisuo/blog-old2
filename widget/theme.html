@@ -1,0 +1,68 @@
+<style type="text/css">
+.theme {
+    padding: 5px;
+    background-color: white;    
+}
+.theme .toolbar {
+    height: 15px;
+    padding-bottom: 5px;
+}
+.theme .switcher {
+    float: right;
+    cursor: pointer;
+    color: gray;
+}
+.theme .color-wrapper {
+    border-top: 2px solid #DDD;
+}
+.theme .color-block {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin: 5px;
+    cursor: pointer;
+}
+</style>
+<div class="theme round-corner">
+    <div class="toolbar">选择背景色<span class="switcher">折叠</span></div>
+    <div class="color-wrapper">
+        <div class="color-block default-color"></div>
+        <div style="background-color: #E9E9E9" class="color-block"></div>
+        <div style="background-color: #FFCF88" class="color-block"></div>
+        <div style="background-color: #B9B434" class="color-block"></div>
+        <div style="background-color: #A0BB36" class="color-block"></div>
+        <div style="background-color: #B3E765" class="color-block"></div>
+        <div style="background-color: #79C77F" class="color-block"></div>
+        <div style="background-color: #8FB99E" class="color-block"></div>
+        <div style="background-color: #499989" class="color-block"></div>
+        <div style="background-color: #6F84A8" class="color-block"></div>
+        <div style="background-color: #6F84A8" class="color-block"></div>
+        <div style="background-color: #A896D6" class="color-block"></div>
+        <div style="background-color: #C699F0" class="color-block"></div>
+        <div style="background-color: #BB8EC4" class="color-block"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    $('.theme .default-color').css('background-color', DEFAULT_BG_COLOR);
+    $('.theme .color-block').each(function() {
+        $(this).attr('title', $(this).css('background-color'));
+    });
+    $('.theme .color-block').on('click', function() {
+        var color = $(this).css('background-color');
+        $('html').css('background-color', color);
+         local('bg-color', color);
+    });
+    $('.theme .switcher').on('click', function() {
+        var switcher = $('.theme .switcher');
+
+        if (switcher.data('closed')) {
+            switcher.text('折叠');
+            switcher.data('closed', false);
+        }
+        else {
+            switcher.text('展开');
+            switcher.data('closed', true);
+        }
+        $('.theme .color-wrapper').slideToggle(500);
+    });
+</script>
