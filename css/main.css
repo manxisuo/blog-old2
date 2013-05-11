@@ -133,14 +133,16 @@ a:hover {
 .post-tags {
     display: inline-block;
     width: 270px;
-    overflow-x: hidden;
+    overflow: hidden;
+    /*
     text-overflow: ellipsis;
-    white-space: nowrap; 
+    white-space: nowrap; */
 }
 
 .post-tags a {
     display: inline-block;
     margin-left: 10px;
+    margin-top: 2px;
     max-width: 8em;
     font-size: 15px;
     overflow-x: hidden;
@@ -150,6 +152,10 @@ a:hover {
     color: #259;
     border-radius: 10px;
     padding: 0 6px;
+}
+
+#post-content img {
+    max-width: 100%;
 }
 
 #post-paging {

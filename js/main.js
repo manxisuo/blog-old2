@@ -70,7 +70,8 @@ function loadPost(postName) {
     $.get(postUrl, function(postData) {
         var html = new Showdown.converter().makeHtml(postData); 
         // 为高亮添加语言类型
-        html = html.replace(/<p>@(\w+)<\/p>\n+<pre><code>/g, '<pre><code class="$1">');
+        //html = html.replace(/<p>@(\w+)<\/p>\n+<pre><code>/g, '<pre><code class="$1">');
+        html = html.replace(/<p>@(\w+)#?(\w*)<\/p>[\n|\s|\t]*<pre><code>/g, '<pre><code class="$1" id="$2">')
         setTitle(post.title);
         $('#post-content').html(html);
         $('#post-desc').html(post.title).append($('<span class="post-date">' + post.date + '</span>'));
