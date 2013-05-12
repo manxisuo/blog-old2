@@ -20,7 +20,7 @@ function setTitle(title) {
 // 根据名称，获取post对象在列表中的索引。所谓名称，即md文件的名称。
 function getPostIndexByName(postName) {
     for (var i = 0; i < postList.length; i++) {
-        if (postList[i].path == postName) return i;
+        if (postList[i].name == postName) return i;
     }
     return -1;
 }
@@ -87,7 +87,7 @@ function loadPost(postName) {
 function loadPagingForPost(n) {
     if (n > 0) {
         var prevPost = postList[n-1];
-        enableLink($('#paging-prev a'), '#!' + prevPost.path, prevPost.title);
+        enableLink($('#paging-prev a'), '#!' + prevPost.name, prevPost.title);
     }
     else {
         disableLink($('#paging-prev a'));
@@ -95,7 +95,7 @@ function loadPagingForPost(n) {
     
     if (n < postList.length - 1) {
         var nextPost = postList[n+1];
-        enableLink($('#paging-next a'), '#!' + nextPost.path, nextPost.title);
+        enableLink($('#paging-next a'), '#!' + nextPost.name, nextPost.title);
     }
     else {
         disableLink($('#paging-next a'));
@@ -127,10 +127,8 @@ function loadTag(tag) {
 // 加载所有文章列表
 function loadAllPostList() {
     $('#post-paging').hide();
-    loadPostList(function(posts) {
-        setTitle(DEFAULT_TITLE);
-        createPostList(posts);
-    });
+    setTitle(DEFAULT_TITLE);
+    createPostList(postList);
 }
 
 // 生成post列表
@@ -144,7 +142,7 @@ function createPostList(posts) {
         
         var titleE = $('<a class="post-title" />').text(post.title);
         titleE.attr('title', post.title);
-        titleE.attr('href', '#!' + post.path);
+        titleE.attr('href', '#!' + post.name);
         
         var dateE = $('<span class="post-date" />').text(post.date);
         
