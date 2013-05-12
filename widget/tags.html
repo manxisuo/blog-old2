@@ -1,0 +1,47 @@
+<style type="text/css">
+.widget-tags {
+    padding: 5px;
+    background-color: white;
+}
+.widget-tags .post-tags {
+    display: inline;
+}
+.widget-tags .toolbar {
+    height: 15px;
+    padding-bottom: 5px;
+}
+.widget-tags .switcher {
+    float: right;
+    cursor: pointer;
+    color: gray;
+}
+.widget-tags .tags-wrapper {
+    border-top: 2px solid #DDD;
+}
+</style>
+<div class="widget-tags round-corner">
+    <div class="toolbar">标签集合<span class="switcher">折叠</span></div>
+    <div class="tags-wrapper"></div>
+</div>
+<script type="text/javascript">
+    $('.widget-tags .switcher').on('click', function() {
+        var switcher = $('.widget-tags .switcher');
+
+        if (switcher.data('closed')) {
+            switcher.text('折叠');
+            switcher.data('closed', false);
+        }
+        else {
+            switcher.text('展开');
+            switcher.data('closed', true);
+        }
+        $('.widget-tags .tags-wrapper').slideToggle(500);
+    });
+    
+    var tagSet = new Set();
+    articleList.each(function(article) {
+        tagSet.addAll(article.tags);
+    });
+    
+    $('.tags-wrapper').html(new Tags(tagSet.toArray()).get());
+</script>

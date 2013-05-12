@@ -1,5 +1,8 @@
 var POST_ROOT = "post";
-
+var WIDGET_ROOT = "widget";
+var COMMENT_WIDGET = 'uyan_comment';
+var DEFAULT_TITLE = '路漫漫';
+var DEFAULT_BG_COLOR = '#D2F4FE';
 
 /**
  * 文章列表缓存。
@@ -14,15 +17,52 @@ Array.prototype.each = function(handle) {
     }
 }
 
+Array.prototype.contains = function(item) {
+    this.each(function(element) {
+        if (element == item)return true;
+    });
+    return false;
+}
+
+// 集合类
+function Set() {
+    this.c = [];
+}
+
+Set.prototype.contains = function(item) {
+    this.c.contains(item);
+}
+
+Set.prototype.add = function(item) {
+    if (!this.contains(item))this.c.push(item);
+}
+
+Set.prototype.addAll = function(items) {
+    var _this = this;
+    items.each(function(item) {
+        _this.add(item);
+    });
+}
+
+Set.prototype.toArray = function() {
+    return this.c;
+}
+
 // Post类
 function Post(name) {
     this.name = name;
     this.url = Post.getUrl(name);
     this.index = Post.getIndex(name);
-    var article = articleList[this.index];
-    this.title = post.title;
-    this.tags = post.tags;
-    this.date = post.date;
+    if (this.index != -1) {
+        var article = articleList[this.index];
+        this.title = article.title;
+        this.tags = article.tags;
+        this.date = article.date;
+        this.existing = true;
+    }
+    else {
+        this.existing = false;
+    }
 }
 
 // 获取Post
@@ -55,7 +95,7 @@ Post.getUrl = function(name) {
 // 根据名称，获取post对象在列表中的索引
 Post.getIndex = function(name) {
     var index = -1;
-    article.each(function(article, i) {
+    articleList.each(function(article, i) {
         if (article.name == name) index = i;
     });
 
@@ -69,25 +109,27 @@ function PostPaginator(post) {
 
 PostPaginator.prototype.get = function() {
     var box = $('<div class="post-paging" />');
-    var prevWrapper = $('<span class="post-prev"><a /></span>');
-    var nextWrapper = $('<span class="post-next"><a /></span>');
+    var prevWrapper = $('<span class="paging-prev"><a /></span>');
+    var nextWrapper = $('<span class="paging-next"><a /></span>');
     
     var n = this.post.index;
 
     if (n > 0) {
         var prev = articleList[n-1];
-        $('a' prevWrapper).attr('href', '#!' + prev.name).attr('title', prev.title)
+        $('a', prevWrapper).attr('href', '#!' + prev.name)
+            .attr('title', prev.title).text('上一篇');
     }
     else {
-        $('a' prevWrapper).addClass('disable-link');
+        $('a', prevWrapper).addClass('disable-link');
     }
     
-    if (n < postList.length - 1) {
+    if (n < articleList.length - 1) {
         var next = articleList[n+1];
-        $('a' nextWrapper).attr('href', '#!' + next.name).attr('title', next.title)
+        $('a', nextWrapper).attr('href', '#!' + next.name)
+            .attr('title', next.title).text('下一篇');
     }
     else {
-        $('a' nextWrapper).addClass('disable-link');
+        $('a', nextWrapper).addClass('disable-link');
     }
     
     box.append(prevWrapper).append(nextWrapper);
@@ -102,7 +144,7 @@ function Tags(tagNames) {
 Tags.prototype.get = function() {
     var box = $('<span class="post-tags" />');
     this.tagNames.each(function(tagName) {
-        box.append($('<a />').attr('href', '#@' + tagName));
+        box.append($('<a />').attr('href', '#@' + tagName).text(tagName));
     });
     return box;
 }
@@ -113,7 +155,7 @@ function PostLines(articleList) {
 }
 
 PostLines.prototype.get = function() {
-    var box = $('<div class="post-lines" />');
+    var box = $('<ul class="post-lines" />');
     
     this.articleList.each(function(article, i) {
         var postE = $('<li class="post-li" />');
@@ -134,15 +176,43 @@ PostLines.prototype.get = function() {
 }
 
 // 获取文章列表
-function loadAritcleList(callback) {
+function initArticleList(callback) {
     if (null == articleList || articleList.length == 0) {
-        $.get(POST_ROOT + '/index.json', function(articleList) { 
-            if(callback)callback(articleList);
+        $.get(POST_ROOT + '/index.json', function(articles) {
+            articleList = articles;
+            if(callback)callback();
         });
     }
     else {
-        if(callback)callback(articleList);
+        if(callback)callback();
     }
+}
+
+// 加载页面上的所有插件
+function loadAllWidget() {
+    $('.widget').each(function() {
+        var widgetName = $.trim($(this).text());
+        var _this = $(this);
+        loadWidget(_this, widgetName, function() {
+            _this.show();
+        });
+    });
+}
+
+// 加载某个插件
+function loadWidget(box, widgetName, callback) {
+    var url = WIDGET_ROOT + '/' + widgetName + '.html';
+    $.get(url, function(data){
+        box.html(data);
+        box.find('script').each(function() {
+            //executeInnerJS($(this).text());
+            $(this).remove();
+        });
+        box.find('style').each(function() {
+            //$(this).remove(); 
+        });
+        if(callback)callback();
+    });
 }
 
 // 本地存储的存和取
@@ -168,22 +238,100 @@ function initBgColor() {
         $('html').css('background-color', local('bg-color'));
 }
 
+// 设置页面标题
+function setTitle(title) {
+    document.title = title;
+}
+
+// 根据Tag，获取article列表。
+function getArticlesByTag(tagName) {
+    var articles = [];
+    articleList.each(function(atcl) {
+        atcl.tags.each(function(tag) {
+            if (tagName == tag)articles.push(atcl);
+        });
+    });
+
+    return articles;
+}
+
+function loadAllPostList() {
+    setTitle(DEFAULT_TITLE);
+    var wrapper = $('<div id="posts" class="round-corner" />');
+    wrapper.append($('<div id="post-desc" />').text('所有文章'));
+    wrapper.append(new PostLines(articleList).get());
+    $('#main').html(wrapper);
+}
+
+function loadPostListByTag(tag) {
+    var articleList = getArticlesByTag(tag);
+    setTitle('标签: ' + tag);
+    var wrapper = $('<div id="posts" class="round-corner" />');
+    wrapper.append($('<div id="post-desc" />').text('标签: ' + tag));
+    wrapper.append(new PostLines(articleList).get());
+    $('#main').html(wrapper);
+}
+
+// 什么也没找到
+function loadNothing() {
+    setTitle('什么也没找到');
+    var wrapper = $('<div id="posts" class="round-corner" />');
+    wrapper.append($('<div id="post-desc" />').text('什么也没找到'));
+    $('#main').html(wrapper);
+}
+
+function loadPost(name) {
+    var post = new Post(name);
+    if (post.existing) {
+        var wrapper = $('<div id="posts" class="round-corner" />');
+        post.get(function(content) {
+            setTitle(post.title);
+            var desc = $('<div id="post-desc" />').text(post.title);
+            desc.append($('<span class="post-date">' + post.date + '</span>'));
+            wrapper.append(desc);
+            wrapper.append(content);
+            wrapper.append(new PostPaginator(post).get());
+            $('#main').html(wrapper);
+        });
+    }
+    else {
+        loadNothing();
+    }
+}
+
+function handleHashChange(hashcode) {
+    if ('' == hashcode || '#!' == hashcode) {
+        loadAllPostList();
+    }
+    else if ('#!about' == hashcode) {
+        loadPost('about');
+    }
+    else if (/^#!\d{4}-\d{2}-\d{2}.*/.test(hashcode)) {
+        var postName = hashcode.substring(2);
+        loadPost(postName);
+    }
+    else if (/^#@.+/.test(hashcode)) {
+        var tag = hashcode.substring(2);
+        loadPostListByTag(tag);
+    }
+    else {
+        loadNothing();
+    }
+}
+
 $(function(){
     // 初始化页面背景
     initBgColor();
     
     // hash change event
     $(window).hashchange(function(){
-        loadPostList(function() {
             handleHashChange(location.hash);
-            
-            // 重载comment
-            //loadWidget($('#comment'), COMMENT_WIDGET);    
-        });
     });
     
-    $(window).hashchange();
-    
-    // load widget
-    loadAllWidget();
+    initArticleList(function() {
+        $(window).hashchange();
+        
+        // load widget
+        loadAllWidget(); 
+    });
 });
