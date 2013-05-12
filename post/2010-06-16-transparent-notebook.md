@@ -2,4 +2,7 @@
 就像...在屏幕上穿了个洞！
 于是，我把这个奇怪的现象拍了下来。
 
-![Alt](http://7ybufa.bay.livefilestore.com/y2mPPVS6ly_X9tn58Xv6sG4W7hhq68tIcbRNM5yMfTR6-j7CL0Wx-9dFjGnGhB82grJsn0vQLyxg1P36VE8JnIahC598BlAZiye4vS09qIZKeX6FA7z4ZDFVLirtsjIaLT_/transparent-notebook.jpg)
+![Alt](https://7yckqq.bay.livefilestore.com/y2pDGcXyDWOrAO4PmEjqzmMgE_pnGaJ3yDHcHDPwWppgFgMh8WZlW-sacaptJilm5mSPShncnATmHLK_JeUVipm2V_o7PrtxB44fhtm5svzJQVNK11Mx_pdZraHWkvwZFhX/transparent-notebook.jpg?psid=1)
+      
+。。。当然了，这不是真的。
+虽然我在标签里面写了ps，但是实际上是用gimp处理的，不是photoshop。
