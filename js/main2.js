@@ -251,6 +251,10 @@ function initBgColor() {
         $('html').css('background-color', local('bg-color'));
 }
 
+function min(a, b) {
+    return a > b ? b : a;
+}
+
 // 设置页面标题
 function setTitle(title) {
     document.title = title;
@@ -295,6 +299,14 @@ function loadNothing() {
 
 function loadSomePosts() {
     $('#main').html('');  
+    var wrapper;
+    var wrappers = new Array(min(INIT_POST_COUNT, articleList.length));
+    wrappers.each(function(item, i) {
+        wrapper = $(mainWrapper);
+        wrappers[i] = wrapper;
+        $('#main').append(wrapper);
+    });
+    
     // 初始展示的文章
     articleList.slice(0, INIT_POST_COUNT).each(function(article, i) {
         var wrapper = $(mainWrapper);
@@ -304,9 +316,8 @@ function loadSomePosts() {
                 setTitle(post.title);
                 var desc = $('<div id="post-desc" />').text(post.title);
                 desc.append($('<span class="post-date">' + post.date + '</span>'));
-                wrapper.append(desc);
-                wrapper.append(content);
-                $('#main').append(wrapper);
+                wrappers[i].append(desc);
+                wrappers[i].append(content);
             });
         }
         else {
