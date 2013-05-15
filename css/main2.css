@@ -87,12 +87,13 @@ a:hover {
     background: transparent;
 }
 
-#posts {
+.posts {
     background-color: #FFF;
     padding: 5px 20px 20px 20px;
+    margin-bottom: 10px;
 }
 
-#posts ul.post-lines {
+.posts ul.post-lines {
     list-style: none;
     padding: 0;
 }
@@ -108,7 +109,7 @@ a:hover {
     float: right;
 }
 
-#posts li.post-li {
+.posts li.post-li {
     margin-top: 10px;
     border-bottom: 2px solid #EEEEEE;
 }
@@ -173,7 +174,6 @@ a:hover {
     height: 60px;
     background: #0AA9FF;
     text-align: center;
-    margin-top: 5px;
     margin-bottom: 10px;
     float: right;
     box-shadow: 0px 1px 3px #A8ABAB;
