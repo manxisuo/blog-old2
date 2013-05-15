@@ -18,10 +18,11 @@ Array.prototype.each = function(handle) {
 }
 
 Array.prototype.contains = function(item) {
+    var _contain = false;
     this.each(function(element) {
-        if (element == item)return true;
+        if (element == item)_contain = true;
     });
-    return false;
+    return _contain;
 }
 
 // 集合类
@@ -30,7 +31,7 @@ function Set() {
 }
 
 Set.prototype.contains = function(item) {
-    this.c.contains(item);
+    return this.c.contains(item);
 }
 
 Set.prototype.add = function(item) {
