@@ -84,6 +84,7 @@ Post.prototype.get = function(callback) {
     $.get(this.url, function(content) {
         // 解析Markdown为HTML
         var html = new Showdown.converter().makeHtml(content); 
+        //var html = markdown.toHTML(content); 
         
         // 为高亮添加语言类型
         html = html.replace(/<p>@(\w+)#?(\w*)<\/p>[\n|\s|\t]*<pre><code>/g, 
