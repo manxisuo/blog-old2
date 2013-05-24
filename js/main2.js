@@ -304,8 +304,11 @@ function loadSomePosts() {
     var wrappers = new Array(min(INIT_POST_COUNT, articleList.length));
     wrappers.each(function(item, i) {
         wrapper = $(mainWrapper);
-        wrappers[i] = wrapper;
+        wrapper.hide();
         $('#main').append(wrapper);
+        
+        // 为了保证文章的展示顺序
+         wrappers[i] = wrapper;
     });
     
     // 初始展示的文章
@@ -319,6 +322,7 @@ function loadSomePosts() {
                 desc.append($('<span class="post-date">' + post.date + '</span>'));
                 wrappers[i].append(desc);
                 wrappers[i].append(content);
+                wrappers[i].show();
             });
         }
         else {
