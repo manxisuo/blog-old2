@@ -71,19 +71,20 @@ a:hover {
 }
 
 #side {
-    float: left;
+    display: inline-block;
     width: 200px;
     background-color: transparent;
-    margin: 5px;
+    margin: 0 5px 0 0;
     padding: 0;
 }
 
 #main {
-    float: left;
-    margin: 5px;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0;
     padding: 0;
     border: 0;
-    width: 730px;
+    width: 750px;
     background: transparent;
 }
 
@@ -181,6 +182,20 @@ a:hover {
 
 #footer p {
     padding-top: 5px;
+}
+
+/* ----------------Disqus-------------- */
+#dsq1 {
+    background-color: white;
+    padding: 10px;
+    width: 730px !important;
+    
+    moz-border-radius: 5px;
+    webkit-moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 1px 3px #A8ABAB;
+    -moz-box-shadow: 0px 1px 3px #A8ABAB;
+    box-shadow: 0px 1px 3px #A8ABAB;
 }
 
 /* ----------------widget-------------- */

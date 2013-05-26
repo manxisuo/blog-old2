@@ -278,7 +278,7 @@ function loadAllPostList() {
     var wrapper = $(mainWrapper);
     wrapper.append($('<div id="post-desc" />').text('所有文章'));
     wrapper.append(new PostLines(articleList).get());
-    $('#main').html(wrapper);
+    $('#main_wrapper').html(wrapper);
 }
 
 function loadPostListByTag(tag) {
@@ -287,7 +287,7 @@ function loadPostListByTag(tag) {
     var wrapper = $(mainWrapper);
     wrapper.append($('<div id="post-desc" />').text('标签: ' + tag));
     wrapper.append(new PostLines(articleList).get());
-    $('#main').html(wrapper);
+    $('#main_wrapper').html(wrapper);
 }
 
 // 什么也没找到
@@ -295,17 +295,17 @@ function loadNothing() {
     setTitle('什么也没找到');
     var wrapper = $(mainWrapper);
     wrapper.append($('<div id="post-desc" />').text('什么也没找到'));
-    $('#main').html(wrapper);
+    $('#main_wrapper').html(wrapper);
 }
 
 function loadSomePosts() {
-    $('#main').html('');  
+    $('#main_wrapper').html('');  
     var wrapper;
     var wrappers = new Array(min(INIT_POST_COUNT, articleList.length));
     wrappers.each(function(item, i) {
         wrapper = $(mainWrapper);
         wrapper.hide();
-        $('#main').append(wrapper);
+        $('#main_wrapper').append(wrapper);
         
         // 为了保证文章的展示顺序
          wrappers[i] = wrapper;
@@ -342,7 +342,7 @@ function loadPost(name) {
             wrapper.append(desc);
             wrapper.append(content);
             wrapper.append(new PostPaginator(post).get());
-            $('#main').html(wrapper);
+            $('#main_wrapper').html(wrapper);
         });
     }
     else {
