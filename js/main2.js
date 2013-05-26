@@ -374,6 +374,19 @@ function handleHashChange(hashcode) {
     }
 }
 
+function handleKeyup(keyCode) {
+    var href;
+    if (keyCode == 37) {
+        href = $('.paging-prev a').attr('href');
+    }
+    else if (keyCode == 39) {
+        href = $('.paging-next a').attr('href');
+    }
+    if (href) {
+        location.href = href;
+    }
+}
+
 $(function(){
     // 初始化页面背景
     initBgColor();
@@ -388,5 +401,10 @@ $(function(){
         
         // load widget
         loadAllWidget(); 
+    });
+    
+    // 注册keyup事件监听器
+    $(document).on('keyup', function(e) {
+        handleKeyup(e.keyCode);
     });
 });
