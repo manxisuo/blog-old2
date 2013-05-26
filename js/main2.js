@@ -134,7 +134,7 @@ PostPaginator.prototype.get = function() {
             .attr('title', prev.title).text('上一篇');
     }
     else {
-        $('a', prevWrapper).addClass('disable-link');
+        $('a', prevWrapper).text('下一篇').addClass('disable-link');
     }
     
     if (n < articleList.length - 1) {
@@ -143,7 +143,7 @@ PostPaginator.prototype.get = function() {
             .attr('title', next.title).text('下一篇');
     }
     else {
-        $('a', nextWrapper).addClass('disable-link');
+        $('a', nextWrapper).text('上一篇').addClass('disable-link');
     }
     
     box.append(prevWrapper).append(nextWrapper);
